@@ -2,19 +2,20 @@ import requests
 import multiprocessing
 import time
 import os
+import sys
 from dotenv import load_dotenv
-
 load_dotenv()
-SUBMITTER_SERVER = f"{os.getenv('SUBMITTER_SERVER')}"
-ATTDEF_SERVER = f"{os.getenv('ATTDEF_SERVER')}"
+
+HOST = f"{os.getenv('HOST')}"
 TOKEN = f"{os.getenv('TOKEN')}"
+
+ATTDEF_SERVER = f"https://{HOST}/api/v2/"
+CHALL_ID = '1'        # Change this to the challenge ID
+CHALL_PORT = 0000     # Change this to the challenge port
 
 if not TOKEN:
   print("[-] Token not found")
-  exit()
-
-CHALL_ID = '1'
-CHALL_PORT = 10004
+  sys.exit(1)
 
 def exploit(target_ip, port):
   try:
@@ -40,19 +41,19 @@ def process_exploit(target_ip, port):
       
     print(f"[+] Flag: {flag}")
       
-    requests.post(SUBMITTER_SERVER, json={'flag': [flag]}, headers={'Authorization': f'Bearer {TOKEN}'})
+    requests.post('http://localhost:3000/submit', json={'flag': [flag]})
   except Exception as e:
     print(f"[-] Error: {e}")
 
 def main():
-  # target_ip_list = requests.get(ATTDEF_SERVER + "services", headers={'Authorization': f'Bearer {TOKEN}'}).json()['data'][CHALL_ID]
+  target_ip_list = requests.get(ATTDEF_SERVER + "services", headers={'Authorization': f'Bearer {TOKEN}'}).json()['data'][CHALL_ID]
 
-  target_ip_list = {
-    "1": "10.10.0.1",
-    "2": "10.10.0.2",
-  }
+  # target_ip_list = {
+  #   "1": "10.10.0.1",
+  #   "2": "10.10.0.2",
+  # }
   
-  timer = 0 # in seconds (TICK)
+  timer = 0
     
   while True:
     if timer > 0:
@@ -65,7 +66,7 @@ def main():
       process = multiprocessing.Process(target=process_exploit, args=(target_ip, CHALL_PORT))
       process.start()
 
-    timer = 300
+    timer = 300 # Tick in seconds
 
 if __name__ == "__main__":
   main()
