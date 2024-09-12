@@ -7,3 +7,15 @@ This template originaly written by [@evandrarf](https://github.com/evandrarf)
 - `python3` with pip
 - `requests` library
 - `python-dotenv` library
+
+## Usage
+
+1. Clone this repository
+2. Install the requirements
+3. Create a `.env` file with the following variables:
+```
+SUBMITTER_SERVER=
+ATTDEF_SERVER=
+TOKEN=
+````
+4. Run the script with `python3 app.py`
