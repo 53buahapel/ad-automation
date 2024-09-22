@@ -8,9 +8,10 @@ load_dotenv()
 
 HOST = f"{os.getenv('HOST')}"
 TOKEN = f"{os.getenv('TOKEN')}"
+TEAM_NAME = "bang ini nama kelompoknya diisi apa"
 
 ATTDEF_SERVER = f"https://{HOST}/api/user/"
-CHALL_ID = '1'        # Change this to the challenge ID
+
 CHALL_PORT = 0000     # Change this to the challenge port
 
 if not TOKEN:
@@ -47,10 +48,9 @@ def process_exploit(target_ip, port):
 
 def main():
   target_ip_list = requests.get(ATTDEF_SERVER).json()['data']
-  target_ip_list = {x['username']: x['ip'] for x in target_ip_list}
+  target_ip_list = { x['username']: x['ip'] for x in target_ip_list}
   
   timer = 0
-  
   while True:
     if timer > 0:
       print(f"[+] Next Exploit in: {timer} seconds", end="\r")
