@@ -8,7 +8,7 @@ dotenv.load_dotenv()
 HOST = f"{os.getenv('HOST')}"
 TOKEN = f"{os.getenv('TOKEN')}"
 
-SUBMITTER_URL = f"https://{HOST}/api/v2/submit"
+SUBMITTER_URL = f"https://{HOST}/api/flag"
 
 app = Flask(__name__)
 
