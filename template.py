@@ -11,7 +11,7 @@ TOKEN = f"{os.getenv('TOKEN')}"
 TEAM_NAME = "bang ini nama kelompoknya diisi apa"
 
 ATTDEF_SERVER = f"https://{HOST}/api/user/"
-
+FLAG_FORMAT = "GEMASTIK"
 CHALL_PORT = 0000     # Change this to the challenge port
 
 if not TOKEN:
@@ -22,25 +22,25 @@ def exploit(target_ip, port):
   try:
 
 
-    flag = ""
-    if not flag:
+    flag = "GEMASTIK{test}"
+    if FLAG_FORMAT not in flag:
       raise Exception("Flag not found")
     
     return flag
   except Exception as e:
     print(f"[-] Error: {e} ({target_ip})")
 
-def process_exploit(target_ip, port):
+def process_exploit(target_ip, port, target_id):
   try:
     print(f"[+] Target IP: {target_ip}")
       
     flag = exploit(target_ip, CHALL_PORT)
     
     if not flag:
-      print(f"[-] Exploit failed ({target_ip})")
+      print(f"[-] Exploit failed to team {target_id} ({target_ip})")
       return
       
-    print(f"[+] Flag: {flag}")
+    print(f"[+] Flag: {target_id} {flag}")
       
     requests.post('http://localhost:3000/submit', json={'flag': [flag]})
   except Exception as e:
@@ -49,6 +49,7 @@ def process_exploit(target_ip, port):
 def main():
   target_ip_list = requests.get(ATTDEF_SERVER).json()['data']
   target_ip_list = { x['username']: x['ip'] for x in target_ip_list}
+  target_ip_list.pop(TEAM_NAME)
   
   timer = 0
   while True:
@@ -59,7 +60,7 @@ def main():
       continue
     
     for target_id, target_ip in target_ip_list.items():
-      process = multiprocessing.Process(target=process_exploit, args=(target_ip, CHALL_PORT))
+      process = multiprocessing.Process(target=process_exploit, args=(target_ip, CHALL_PORT, target_id))
       process.start()
 
     timer = 300 # Tick in seconds
