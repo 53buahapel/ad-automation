@@ -6,12 +6,12 @@ import sys
 from dotenv import load_dotenv
 load_dotenv()
 
-HOST = f"{os.getenv('HOST')}"
-TOKEN = f"{os.getenv('TOKEN')}"
-TEAM_NAME = "bang ini nama kelompoknya diisi apa"
+HOST        = f"{os.getenv('HOST')}"
+TOKEN       = f"{os.getenv('TOKEN')}"
+TEAM_NAME   = f"{os.getenv('TEAM')}"
+FLAG_FORMAT = f"{os.getenv('FLAG')}"
 
 ATTDEF_SERVER = f"https://{HOST}/api/user/"
-FLAG_FORMAT = "GEMASTIK"
 CHALL_PORT = 0000     # Change this to the challenge port
 
 if not TOKEN:
